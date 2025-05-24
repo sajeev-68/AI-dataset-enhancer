@@ -1,18 +1,24 @@
 # Vulnerability Enhancement Pipeline
 
-A distributed system for enhancing vulnerability descriptions using Docker containers and Ollama LLMs with parallel processing capabilities.
+A distributed system for enhancing datasets using Docker containers and Ollama LLMs with parallel processing capabilities.
 
 ## 🚀 Overview
 
-This pipeline processes large datasets of vulnerability analyses (such as those from the Juliet Test Suite) and enhances their descriptions using AI models. It's designed to handle up to 17,000+ samples efficiently through parallel processing across multiple Docker containers.
+This pipeline processes large datasets of vulnerability analyses and enhances their descriptions using AI models. It's designed to handle up to 17,000+ samples efficiently through parallel processing across multiple Docker containers.
+
+## Note 
+Some things to consider:
+
+- This pipeline uses a specific format for the json file(no csv, sorry!), but it can easily be changed in the master and worker script to suit any dataset(not only vulnerability datasets)
+- The prompt used is a custom one, feel free to change the format of the prompt, the max new tokens and the temprature
+- This only works for linux/wsl with nvidia gpus(with support for the cuda container toolkit)
+- The code can adapted to even create samples from scratch, but the quality depends on the model that is pulled.
 
 ### Key Features
 
 - **🔄 Parallel Processing**: Distributes workload across multiple Docker containers
-- **📊 Real-time Monitoring**: Live progress tracking with visual progress bars
 - **💾 Automatic Checkpointing**: Saves progress every 100 entries to prevent data loss
 - **🎯 GPU Memory Management**: Efficiently shares GPU resources across workers
-- **📁 Flexible Data Formats**: Supports various JSON structures
 - **🔧 Resume Capability**: Automatically resumes from checkpoints after interruptions
 
 ## 🏗️ Architecture
@@ -63,15 +69,11 @@ The system consists of:
 # Install Docker
 sudo apt-get update
 sudo apt-get install docker.io docker-compose
-
-# Install NVIDIA Container Toolkit
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-sudo apt-get update
-sudo apt-get install -y nvidia-container-toolkit
-sudo systemctl restart docker
 ```
+
+For the Nvidia container toolkit please follow the [official guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+
+**Note: The installation process for linux and wsl2 is different please install the proper package/driver**
 
 ### 2. Clone Repository
 
@@ -196,17 +198,18 @@ vulnerability-enhancement-pipeline/
 ├── master/
 │   ├── Dockerfile              # Master container setup
 │   └── master.py              # Coordination and monitoring logic
+|   |__ backup.py               # testing file no relevance
 ├── worker/
 │   ├── Dockerfile              # Worker container setup
 │   ├── worker.py              # Processing logic
+|   |__ backup.py              # testing file no relevance
+|   |__ backup1.py             # testing file no relevance
 │   └── start-ollama.sh        # Ollama service initialization
 ├── data/
 │   └── vulnerability_dataset.json  # Input dataset (place here)
 ├── results/
-│   ├── vulnerability_dataset.enhanced.json  # Final output
-│   └── fragments/             # Intermediate results and checkpoints
-└── docs/
-    └── troubleshooting.md     # Common issues and solutions
+    ├── vulnerability_dataset.enhanced.json  # Final outpu
+    └── fragments/             # Intermediate results and checkpoints
 ```
 
 ## 🎯 Use Cases
@@ -230,7 +233,7 @@ vulnerability-enhancement-pipeline/
 
 ### Expected Processing Times
 - **17K samples**: ~8-10 hours with 4 workers
-- **Per sample**: ~2-4 seconds (depending on model size)
+- **Per sample**: ~4-10 seconds (depending on model size)
 - **Throughput**: ~400-600 samples/hour total
 
 ### GPU Memory Usage
@@ -301,20 +304,3 @@ python worker/worker.py
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Ollama](https://ollama.ai/) for the excellent LLM serving platform
-- [NSA's Juliet Test Suite](https://samate.nist.gov/SARD/test-suites/juliet) for vulnerability test cases
-- [Google's Gemma](https://github.com/google-deepmind/gemma) models for high-quality text generation
-- [Qwen Team](https://github.com/QwenLM/Qwen) for excellent code-specialized models
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/yourusername/vulnerability-enhancement-pipeline/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/vulnerability-enhancement-pipeline/discussions)
-- **Documentation**: [Wiki](https://github.com/yourusername/vulnerability-enhancement-pipeline/wiki)
-
----
-
-**⭐ If this project helps you, please give it a star on GitHub!**
