@@ -4,7 +4,7 @@ A distributed system for enhancing datasets using Docker containers and Ollama L
 
 ## 🚀 Overview
 
-This pipeline processes large datasets of vulnerability analyses and enhances their descriptions using AI models. It's designed to handle up to 17,000+ samples efficiently through parallel processing across multiple Docker containers.
+This pipeline processes large datasets of vulnerability analyses and enhances their descriptions using AI models. It's designed to handle up to large datasets efficiently through parallel processing across multiple Docker containers.
 
 ## Note 
 Some things to consider:
