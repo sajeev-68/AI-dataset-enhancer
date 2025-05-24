@@ -13,6 +13,7 @@ Some things to consider:
 - The prompt used is a custom one, feel free to change the format of the prompt, the max new tokens and the temprature
 - This only works for linux/wsl with nvidia gpus(with support for the cuda container toolkit)
 - The code can be adapted to also create samples from scratch, but the quality depends on the model that is pulled.
+- Be sure to create the data directory and add the input file.
 
 ### Key Features
 
@@ -236,6 +237,7 @@ vulnerability-enhancement-pipeline/
 ## 📈 Performance
 
 ### Expected Processing Times
+**These are estimates and not guarantees, performance/times highly depend on worker config, gpu power etc.**  
 - **17K samples**: ~8-10 hours with 4 workers
 - **Per sample**: ~4-10 seconds (depending on model size)
 - **Throughput**: ~400-600 samples/hour total
