@@ -1,0 +1,113 @@
+version: '3'
+
+services:
+  master:
+    build:
+      context: ./master
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/data
+      - ./results:/results
+    depends_on:
+      - worker1
+      - worker2
+      - worker3
+      - worker4
+    networks:
+      - ollama-network
+    environment:
+      - NUM_WORKERS=4
+      - INPUT_FILE=/data/final2.json
+      - OUTPUT_FILE=data/results/enhanced.json
+
+  worker1:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/data
+      - ./results:/results
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - ollama-network
+    environment:
+      - WORKER_ID=1
+      - MODEL_NAME=gemma3:1b-it-qat
+      - GPU_MEMORY_LIMIT=1536  # 1.5GB VRAM
+      - CUDA_VISIBLE_DEVICES=0
+      - CUDA_MPS_ACTIVE_THREAD_PERCENTAGE=25
+
+  worker2:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/data
+      - ./results:/results
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - ollama-network
+    environment:
+      - WORKER_ID=2
+      - MODEL_NAME=gemma3:1b-it-qat
+      - GPU_MEMORY_LIMIT=1536  # 1.5GB VRAM
+      - CUDA_VISIBLE_DEVICES=0
+      - CUDA_MPS_ACTIVE_THREAD_PERCENTAGE=25
+
+  worker3:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/data
+      - ./results:/results
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - ollama-network
+    environment:
+      - WORKER_ID=3
+      - MODEL_NAME=gemma3:1b-it-qat
+      - GPU_MEMORY_LIMIT=1536  # 1.5GB VRAM
+      - CUDA_VISIBLE_DEVICES=0
+      - CUDA_MPS_ACTIVE_THREAD_PERCENTAGE=25
+
+  worker4:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/data
+      - ./results:/results
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - ollama-network
+    environment:
+      - WORKER_ID=4
+      - MODEL_NAME=gemma3:1b-it-qat
+      - GPU_MEMORY_LIMIT=1536  # 1.5GB VRAM
+      - CUDA_VISIBLE_DEVICES=0
+      - CUDA_MPS_ACTIVE_THREAD_PERCENTAGE=25
+
+networks:
+  ollama-network:
+    driver: bridge
