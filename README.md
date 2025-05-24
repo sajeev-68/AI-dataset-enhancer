@@ -12,7 +12,7 @@ Some things to consider:
 - This pipeline uses a specific format for the json file(no csv, sorry!), but it can easily be changed in the master and worker script to suit any dataset(not only vulnerability datasets)
 - The prompt used is a custom one, feel free to change the format of the prompt, the max new tokens and the temprature
 - This only works for linux/wsl with nvidia gpus(with support for the cuda container toolkit)
-- The code can adapted to even create samples from scratch, but the quality depends on the model that is pulled.
+- The code can be adapted to also create samples from scratch, but the quality depends on the model that is pulled.
 
 ### Key Features
 
