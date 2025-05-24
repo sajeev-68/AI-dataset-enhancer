@@ -65,6 +65,8 @@ The system consists of:
 
 ### 1. Install Docker and NVIDIA Support
 
+
+
 ```bash
 # Install Docker
 sudo apt-get update
@@ -74,6 +76,8 @@ sudo apt-get install docker.io docker-compose
 For the Nvidia container toolkit please follow the [official guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 **Note: The installation process for linux and wsl2 is different please install the proper package/driver**
+
+Also install Docker desktop for wsl2
 
 ### 2. Clone Repository
 
