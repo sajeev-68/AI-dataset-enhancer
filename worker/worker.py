@@ -107,34 +107,12 @@ def save_checkpoint(processed_entries, total_entries, data_structure, original_d
         logger.error(f"Failed to save checkpoint: {e}")
 
 def enhance_description(entry):
-    """Enhance a vulnerability description using the Ollama Python library."""
+    """Enhance a vulnerability(or any) description using the Ollama Python library."""
+    #change the fields to be selected here
     original_output = entry.get("output", "")
     code_sample = entry.get("input", "")
 
-    sus_prompt = f"""You are a cybersecurity expert. Improve the following vulnerability explanation by:
-1. Fixing grammar and sentence structure
-2. Making the description more clear and descriptive
-3. Ensuring proper technical explanations while keeping the same structure
-4. Maintaining all technical details (CWE numbers, line numbers, function names)
-5. The description should be a minimum of 2 lines
-6. Only the description no fluff or other things like intro
-7. The following code is assumed to be safe, it has a vulnerability and a fix
-
-The vulnerability relates to this code:
-```c/cpp
-{code_sample}
-```
-
-Original vulnerability description:
-{original_output}
-
-Enhanced description:"""
-
-
-
-    # Create  safe prompt for the model
-
-
+    # change this if you want a different prompt
     prompt = f"""You are a cybersecurity expert. Improve the following vulnerability explanation by:
 1. Fixing grammar and sentence structure
 2. Making the description more clear and descriptive
@@ -158,13 +136,13 @@ Enhanced description:"""
         try:
             # Use the ollama.chat function to get a response
             response = ollama.chat(
-                model="gemma3:1b-it-qat",  # Use the preset model name
+                model="gemma3:1b-it-qat",  # Use the pulled model name
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
                 options={
-                    "temperature": 0.2,
-                    "num_predict": 256
+                    "temperature": 0.2, # change temprature for more creative responses
+                    "num_predict": 256 # change number of tokens for more/less detailed explanations/responses
                 }
             )
 
