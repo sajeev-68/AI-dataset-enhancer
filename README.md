@@ -1,4 +1,4 @@
-# Vulnerability Enhancement Pipeline
+# Dataset Enhancer Pipeline
 
 A distributed system for enhancing datasets using Docker containers and Ollama LLMs with parallel processing capabilities. Reduces overall creation/enhancing time.
 
